@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/gorilla/mux"
 	"log"
 	"net/http"
 )
@@ -22,13 +23,16 @@ func alluser(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(users)
 }
 func homePage(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprint(w, "Homepage Endpoint Hit")
+	fmt.Fprint(w, "Homepage Endpoint Hit Yes7")
 }
 
 func handleRequests() {
-	http.HandleFunc("/", homePage)
-	http.HandleFunc("/users", alluser)
-	log.Fatal(http.ListenAndServe(":8081", nil))
+
+	myRouter := mux.NewRouter().StrictSlash(true)
+
+	myRouter.HandleFunc("/", homePage)
+	myRouter.HandleFunc("/users", alluser)
+	log.Fatal(http.ListenAndServe(":8081", myRouter))
 }
 
 func main() {
